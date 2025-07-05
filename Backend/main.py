@@ -2,6 +2,7 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from generate.claudai import ask_claude
+import json
 
 import os
 
@@ -9,6 +10,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_credentials = True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -18,4 +20,4 @@ async def generate(request: Request):
     data = await request.json()
     prompt = data.get("prompt")
     code = ask_claude(prompt) 
-    return {"code": code}
+    return json.loads(code)

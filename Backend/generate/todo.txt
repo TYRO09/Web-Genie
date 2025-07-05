@@ -1,5 +1,13 @@
-make agent, currently horrible
+- make agent, currently horrible
+- area to edit the code passed yourself
+- make web genie template page even better (done)
+- need to find use cases
 
-area to edit the code passed yourself
+7/06 todo
+ - make background for AI white
+ - AI page has an input area
+ - Code editor is more visible
+ - Memory component
+ - Validation agent along with esbuild tool
 
-make web genie template page even better
+- network rooms
