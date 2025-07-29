@@ -21,6 +21,7 @@ export default function App() {
             projectFiles={projectFiles}
             Component={compiledComponent}
             setCompiledComponent={setCompiledComponent}
+            setProjectFiles={setProjectFiles}
           />
         } />
       </Routes>

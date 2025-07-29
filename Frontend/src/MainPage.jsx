@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { ensureEsbuildInitialized } from './scripts/esinit';
 import * as esbuild from 'esbuild-wasm';
 import createVirtualFsPlugin from './scripts/virtualfs'; // We'll create this
+import App from './App';
 
 
 
@@ -34,16 +35,17 @@ const handleGenerate = async (prompt) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt }),
     });
-
+    
     const data = await res.json();
-    if (!data.files || typeof data.files !== 'object') {
-      throw new Error("No valid component files received");
-    }
+    console.log(data);
+    // if (!data.files) {
+    //   throw new Error("No valid component files received");
+    // }
 
-    const entry = data.entry || "App.js";
-    const files = data.files;
+    const entry =  "App.js";
+    // const files = data.files;
 
-    setProjectFiles(files);
+    setProjectFiles(data);
 
     const result = await esbuild.build({
       entryPoints: [entry],
@@ -52,8 +54,8 @@ const handleGenerate = async (prompt) => {
       format: 'iife',
       globalName: 'GeneratedComponent',
       platform: 'browser',
-      plugins: [createVirtualFsPlugin(files)],
-      external: ['react', 'react-dom']
+      plugins: [createVirtualFsPlugin(data)],
+      external: ['react', 'react-dom', 'react-router-dom']
     });
 
     let outputCode = result.outputFiles[0].text;
@@ -82,23 +84,23 @@ const handleGenerate = async (prompt) => {
 };
 
   return (
-    <div className="relative min-h-screen w-screen overflow-hidden">
+    <div className="relative min-h-screen w-screen overflow-hidden bg-black">
       {/* Video background */}
       <video
         autoPlay
         loop
         muted
         playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover z-0"
+        className="absolute top-10 left-0 opacity-90 w-full h-full object-cover z-0"
       >
         <source src="/brain.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-    <div className="absolute top-22 left-20 z-10 bg-black/60 text-white px-4 py-1 rounded shadow text-lg tracking-wide">
+    <div className="absolute top-20 left-16 z-10 bg-black/60 text-white px-4 py-1 rounded shadow text-lg tracking-wide">
         an IITK Consulting Group project
       </div>
       {/* Left-aligned overlay content */}
-      <div className="relative z-10 flex flex-col items-start justify-center h-screen pl-22 max-w-xl">
+      <div className="relative z-10 flex flex-col items-start justify-center h-screen pl-20 max-w-xl">
         <h3 className="text-6xl text-white mb-8 drop-shadow-lg">
           W E B I N I <span className="text-xl align-bottom ml-2 text-gray-300">beta</span>
             </h3>
