@@ -1,5 +1,23 @@
 # web genie codes
 
+## Setup
+
+Open terminal 1
+```
+cd Frontend
+npm i 
+npm run dev
+```
+
+Open terminal 2
+```
+cd Backend
+uvicorn main:app --port 3001 --reload
+```
+
+
+## Version History
+
 
 Current Version: v1.2
 
