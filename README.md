@@ -12,6 +12,7 @@ npm run dev
 Open terminal 2
 ```
 cd Backend
+source genie-venv/bin/activate
 uvicorn main:app --port 3001 --reload
 ```
 
