@@ -1,4 +1,12 @@
-# web genie codes
+# Web Genie
+
+#### Official repository of ICG Summer Project '25 - Web Genie
+
+_Project Objective:_ A project based on Generative AI, specifically LLM's and their application in Web Development. Get a thorough understanding of the Web Development domain before leveraging AI to build dynamic components for the user.
+
+_Conduction:_ For more details visit Conduction branch on same repository
+
+__End Deliverable:__ A website with an inbuilt AI capable of creating and manipulating components within the webpage as user demands. That is, a real-time continuous AI-generated webpage.
 
 ## Setup
 
@@ -16,34 +24,12 @@ source genie-venv/bin/activate
 uvicorn main:app --port 3001 --reload
 ```
 
+## Credits
 
-## Version History
+__Mentors__<br>
+Ameer Zaman<br>
+Manan Jindal<br>
+Naveen Godara<br>
+Yash Pandit
 
-
-Current Version: v1.2
-
-Features
-- Implemented agentic recursive loop for validation using pseudo-compile tool
-- Refinement pipeline incorporated to improve via human-in-the-loop concept
-- Improved styling issues by precomputing tailwind classes
-
-Previous Version: v1.1
-
-Features
-- Significantly improved home UI and theme
-- Generated page incorporated with an overlay to refine page
-- Virtual file system implemented to sandbox and generate multiple components together
-
-Previous Version: v1
-
-Features
-- Well designed loading and home page UI
-- Claude API connected for backend
-- Organized file structure
-
-Previous Version: v0
-
-Features
-- LLM connected using github API
-- Base webpage using react+vite template
-- Connected makeshift backend to frontend to take in prompts and generate components
+Thank you to all the mentees, hope all of you had a successful project :)

@@ -12,9 +12,8 @@ import App from './App';
 
 
 
-export default function MainPage({ setProjectFiles, setCompiledComponent }) {
+export default function MainPage({ setPrmpt, setProjectFiles, setCompiledComponent }) {
   const [devMode, setDevMode] = useState(false);
-  const [code, setLocalCode] = useState(""); // For devMode editor
   const [prompt, setPrompt] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -23,7 +22,9 @@ export default function MainPage({ setProjectFiles, setCompiledComponent }) {
     ensureEsbuildInitialized();
 }, []);
 
-  // You should pass compileJSX as a prop or import it here if needed
+useEffect(() => {
+    setPrmpt(prompt);
+  }, [prompt]);
 
 const handleGenerate = async (prompt) => {
   try {
@@ -37,10 +38,6 @@ const handleGenerate = async (prompt) => {
     });
     
     const data = await res.json();
-    console.log(data);
-    // if (!data.files) {
-    //   throw new Error("No valid component files received");
-    // }
 
     const entry =  "App.js";
     // const files = data.files;
@@ -60,17 +57,16 @@ const handleGenerate = async (prompt) => {
 
     let outputCode = result.outputFiles[0].text;
 
-    // Patch dynamic require for React/ReactDOM to use globals
+
     outputCode = outputCode
       .replace(/__require\(["']react["']\)/g, 'window.React')
       .replace(/__require\(["']react-dom["']\)/g, 'window.ReactDOM');
 
-    // Ensure the generated component is assigned to window
     outputCode += '\nwindow.GeneratedComponent = GeneratedComponent;';
 
     console.log('Patched output code:', outputCode);
 
-    eval(outputCode); // Defines window.GeneratedComponent
+    eval(outputCode); 
     const Component = window.GeneratedComponent?.default || window.GeneratedComponent;
 
     setCompiledComponent(() => Component);
@@ -108,19 +104,6 @@ const handleGenerate = async (prompt) => {
           +++
         </button>
         {loading && <Load />}
-        {devMode && (
-          <div className="fixed top-0 right-0 w-1/2 h-full bg-white shadow-lg z-40 p-4 overflow-y-auto transition-transform">
-            <h2 className="text-lg font-bold mb-2">Edit Component Code</h2>
-            <Editor
-              value={code}
-              onValueChange={setLocalCode}
-              highlight={code => Prism.highlight(code, Prism.languages.jsx, 'jsx')}
-              padding={10}
-              className="text-sm font-mono bg-gray-100 border rounded"
-            />
-            {/* Add Save & Apply logic if needed */}
-          </div>
-        )}
         <div className="my-4 text-white w-full max-w-xl">
           <input
             type="text"
@@ -134,7 +117,7 @@ const handleGenerate = async (prompt) => {
             disabled={loading}
           />
         </div>
-        {error && <p className="text-red-500">❌ {error}</p>}
+        {error && <p className="text-red-500">{error}</p>}
       </div>
     </div>
   );

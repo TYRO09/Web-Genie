@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import * as esbuild from 'esbuild-wasm';
 import createVirtualFsPlugin from './scripts/virtualfs';
 
-export default function GeneratedPage({ projectFiles, Component, setCompiledComponent, setProjectFiles }) {
+export default function GeneratedPage({ prmpt, projectFiles, Component, setCompiledComponent, setProjectFiles }) {
   const navigate = useNavigate();
   const [refinePrompt, setRefinePrompt] = useState("");
   const [isRefining, setIsRefining] = useState(false);
   const [refineError, setRefineError] = useState(null);
 
-  // Persistent logging that won't get cleared by re-renders
+  // Persistent logging that won't get cleared by regeneration of page
   const log = (message, data = null) => {
     const timestamp = new Date().toISOString();
     const logEntry = `[${timestamp}] ${message}`;
@@ -35,7 +35,7 @@ export default function GeneratedPage({ projectFiles, Component, setCompiledComp
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: "tictactoe", // You may want to store the original prompt in state and pass it here
+          prompt: prmpt,
           refine_prompt: refinePrompt,
           files_dict: projectFiles
         })
@@ -54,9 +54,7 @@ export default function GeneratedPage({ projectFiles, Component, setCompiledComp
       // More detailed comparison
       if (!filesChanged) {
         log("No changes detected in files");
-        log("Original files", { projectFiles });
-        log("Returned files", { data });
-        
+ 
         // Check individual files
         Object.keys(data).forEach(filename => {
           if (data[filename] !== projectFiles[filename]) {
@@ -114,15 +112,6 @@ export default function GeneratedPage({ projectFiles, Component, setCompiledComp
       setIsRefining(false);
     }
   };
-
-  // if (!Component) {
-  //   return (
-  //     <div className="flex items-center justify-center h-screen bg-black text-blue-300 font-bold">
-  //       No component compiled. Please go back and generate again.
-  //     </div>
-  //   );
-  // }
-
   return (
     <div className="min-h-screen w-screen relative">
       {/* Render the generated component full screen */}
